@@ -274,26 +274,35 @@ def write_clangd(directory: str):
 def write_compile_commands(directory: str):
     """
     Generate compile_commands.json for all *.cpp in `directory`.
-    This makes clangd parse exactly like your g++ build.
+    clangd will parse code exactly as g++ does (MinGW-safe).
     """
     root = Path(directory).resolve()
     cpp_files = sorted(p for p in root.glob("*.cpp"))
+
     include_flag = []
     if (root / "include").exists():
         include_flag = [f"-I{(root / 'include').as_posix()}"]
 
     entries = []
     for src in cpp_files:
-        cmd_parts = [GPP, STD, *EXTRA_WARN, *include_flag, "-c", src.name, "-o", f"{src.stem}.o"]
+        cmd_parts = [
+            GPP,
+            STD,
+            *EXTRA_WARN,
+            *include_flag,
+            "-c",
+            src.as_posix()
+        ]
         entries.append({
-            "directory": str(root),
-            "file": str(src),
+            "directory": root.as_posix(),
+            "file": src.as_posix(),
             "command": " ".join(cmd_parts)
         })
 
     out_path = root / "compile_commands.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(entries, f, indent=2)
+
     print(f"Wrote: {out_path} ({len(entries)} files)")
 
 # ---------------- creators ----------------
@@ -301,7 +310,7 @@ def create_cpp_files(directory: str, num_files: int):
     os.makedirs(directory, exist_ok=True)
     include_dir = os.path.join(directory, "include")
     os.makedirs(include_dir, exist_ok=True)
-    write_clangd(directory)
+
     for i in range(num_files):
         filename = os.path.join(directory, f"{string.ascii_uppercase[i]}.cpp")
         if not os.path.exists(filename):
@@ -310,7 +319,9 @@ def create_cpp_files(directory: str, num_files: int):
             print(f"Created: {filename}")
         else:
             print(f"File already exists: {filename}")
+
     write_compile_commands(directory)
+
 
 def create_java_files(directory: str, num_files: int):
     os.makedirs(directory, exist_ok=True)
