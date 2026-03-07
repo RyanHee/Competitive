@@ -1,0 +1,66 @@
+{
+  "ensure_final_newline_on_save": false,
+  "remove_trailing_whitespace_on_save": false,
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": true
+  },
+  "base_keymap": "VSCode",
+  "agent": {
+    "enabled": false,
+    "button": false,
+    "model_parameters": []
+  },
+  "minimap": {
+    "show": "never"
+  },
+  "file_types": {},
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "ui_font_size": 20,
+  "buffer_font_size": 16.0,
+  "theme": {
+    "mode": "system",
+    "light": "macOS Classic Light",
+    "dark": "One Dark"
+  },
+
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "ignore_system_version": true,
+        "arguments": [
+          "--background-index=0",
+          "--header-insertion=never",
+          "--query-driver=C:/msys64/mingw64/bin/g++.exe",
+          "--clang-tidy",
+          "--clang-tidy-checks=clang-analyzer-*,bugprone-*,performance-*,modernize-*,readability-*"
+          // ✅ remove --gcc-toolchain and any -W* here
+        ]
+      }
+    }
+  },
+  
+  "languages": {
+      "C++": {
+        "format_on_save": "off",
+        "auto_indent": false
+      }
+    },
+    
+  "disable_ai": true,
+
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 10
+    }
+  },
+
+  "session": {
+    "trust_all_worktrees": true
+  }
+
+}
