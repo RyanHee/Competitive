@@ -1,7 +1,14 @@
 #include <bits/stdc++.h>
+#include<bits/extc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 #define ll long long
 #define pii pair<int, int>
+
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 template<class T>
 istream& operator>>(istream& is, vector<T>& v) {
@@ -128,7 +135,7 @@ int query(int i) {
         ret+=F[i];
     return ret;
 }
-// use same as pfx sum T, T[r]-T[l-1]=query(r)-query(l-1)=accumulate(begin(A)+l, begin(A)+r+1, 0);
+// T[l]=sum[0, l];
 
 // dijkstras
 vector<pii>adj[mxN];
@@ -219,6 +226,8 @@ struct SegTree {
         return min(query(node*2, l, mid, ql, qr), query(node*2+1, mid+1, r, ql, qr));
     }
 };
+// ql qr inclusive
+
 
 void solve() {
     
