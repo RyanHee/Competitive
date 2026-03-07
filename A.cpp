@@ -118,7 +118,7 @@ bool unite(int i, int j){
 int F[mxN];
 
 void update(int i, int v) {
-    for (++i;i<0;i+=i&(-i))
+    for (++i;i<mxN;i+=i&(-i))
         F[i]+=v;
 }
 
@@ -176,6 +176,49 @@ void bitmaskdpsubset(){
         }
     }
 }
+
+// SegTree
+struct SegTree {
+    int n;
+    vector<int>tree;
+   
+    SegTree(int n):n(n) {
+        tree.resize(4*n);
+    }
+   
+    void build(vector<int>&A, int node, int l, int r) {
+        if (l==r) {
+            tree[node]=A[l];
+            return;
+        }
+        int mid=l+(r-l)/2;
+        build(A, node*2, l, mid);
+        build(A, node*2+1, mid+1, r);
+        tree[node]=min(tree[node*2], tree[node*2+1]);
+    }
+   
+    void update(int node, int l, int r, int idx, int val) {
+        if (l==r) {
+            tree[node]=val;
+            return;
+        }
+        int mid=l+(r-l)/2;
+       
+        if (idx<=mid)
+            update(node*2, l, mid, idx, val);
+        else
+            update(node*2+1, mid+1, r, idx, val);
+           
+        tree[node]=min(tree[node*2], tree[node*2+1]);
+    }
+   
+    int query(int node, int l, int r, int ql, int qr) {
+        if (ql>r || qr<l) return inf;
+        int mid=l+(r-l)/2;
+        if (ql<=l && r<=qr) return tree[node];
+        return min(query(node*2, l, mid, ql, qr), query(node*2+1, mid+1, r, ql, qr));
+    }
+};
 
 void solve() {
     
