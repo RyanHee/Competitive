@@ -157,7 +157,6 @@ void dijkstras(){
 
 // bitmask dp
 int dp[1<<20];
-
 void bitmaskdp(){
     // job assignment problem
     int n=20;
@@ -188,46 +187,60 @@ void bitmaskdpsubset(){
 // SegTree
 struct SegTree {
     int n;
-    vector<int>tree;
-   
-    SegTree(int n):n(n) {
-        tree.resize(4*n);
+    vector<int>mn, mx;
+
+    SegTree(int n) : n(n) {
+        mn.assign(2*n, inf);
+        mx.assign(2*n, -inf);
     }
-   
-    void build(vector<int>&A, int node, int l, int r) {
-        if (l==r) {
-            tree[node]=A[l];
-            return;
+
+    void build() {
+        for (int i=0;i<n;++i) 
+            mn[n+i]=mx[n+i]=a[i];
+
+        for (int i=n-1;i;--i) {
+            mn[i]=min(mn[i<<1], mn[i<<1|1]);
+            mx[i]=max(mx[i<<1], mx[i<<1|1]);
         }
-        int mid=l+(r-l)/2;
-        build(A, node*2, l, mid);
-        build(A, node*2+1, mid+1, r);
-        tree[node]=min(tree[node*2], tree[node*2+1]);
     }
-   
-    void update(int node, int l, int r, int idx, int val) {
-        if (l==r) {
-            tree[node]=val;
-            return;
+
+    void update(int i, int val) {
+        i+=n;
+        mn[i]=mx[i]=val;
+
+        for (i>>=1;i;i>>=1) {
+            mn[i]=min(mn[i<<1], mn[i<<1|1]);
+            mx[i]=max(mx[i<<1], mx[i<<1|1]);
         }
-        int mid=l+(r-l)/2;
-       
-        if (idx<=mid)
-            update(node*2, l, mid, idx, val);
-        else
-            update(node*2+1, mid+1, r, idx, val);
-           
-        tree[node]=min(tree[node*2], tree[node*2+1]);
     }
-   
-    int query(int node, int l, int r, int ql, int qr) {
-        if (ql>r || qr<l) return inf;
-        int mid=l+(r-l)/2;
-        if (ql<=l && r<=qr) return tree[node];
-        return min(query(node*2, l, mid, ql, qr), query(node*2+1, mid+1, r, ql, qr));
+
+    int queryMin(int l, int r) {
+        int ret=inf;
+
+        for (l+=n, r+=n;l<r;l>>=1, r>>=1) {
+            if (l&1) 
+                ret=min(ret, mn[l++]);
+            if (!(r&1))
+                ret=min(ret, mn[r--]);
+        }
+
+        return ret;
+    }
+
+    int queryMax(int l, int r) {
+        int ret=-inf;
+
+        for (l+=n, r+=n;l<r;l>>=1, r>>=1) {
+            if (l&1) 
+                ret=max(ret, mx[l++]);
+            if (!(r&1))
+                ret=max(ret, mx[r--]);
+        }
+
+        return ret;
     }
 };
-// ql qr inclusive 0 indexed
+// 0 indexed [l, r)
 
 void solve() {
     i128 x=0;
