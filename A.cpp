@@ -7,6 +7,7 @@ using namespace __gnu_pbds;
 #define ld long double
 #define pii pair<int, int>
 #define i128 __int128_t
+#define ar array
 #define pb emplace_back
 #define all(x) (x).begin(), (x).end()
 #define lb(v, x) (int)(lower_bound(all(v), x)-(v).begin())
