@@ -10,6 +10,7 @@ using namespace __gnu_pbds;
 #define ar array
 #define pb emplace_back
 #define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
 #define lb(v, x) (int)(lower_bound(all(v), x)-(v).begin())
 #define up(v, x) (int)(upper_bound(all(v), x)-(v).begin())
 #define fi first
