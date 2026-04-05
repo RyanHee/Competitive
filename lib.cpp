@@ -121,21 +121,27 @@ bool unite(int i, int j){
     return true;
 }
 
+struct Fenwick {
+    int n;
+    vector<int>a;
+    Fenwick(int n) : n(n) {
+        a.resize(n+1);
+    }
 
-// Fenwick Tree
-int F[mxN];
-void update(int i, int v) {
-    for (++i;i<mxN;i+=i&(-i))
-        F[i]+=v;
-}
+    void update(int i, int val) {
+        for (++i;i<=n;i+=i&(-i)) {
+            a[i]+=val;
+        }
+    }
 
-int query(int i) {
-    int ret=0;
-    for (++i;i>0;i-=i&(-i))
-        ret+=F[i];
-    return ret;
-}
-// T[l]=sum[0, l];
+    int query(int i) { 
+        int ret=0;
+        for (++i;i;i-=i&(-i)) {
+            ret+=a[i];
+        }
+        return ret;
+    }
+}; //query(i)=sum[0, i]
 
 // dijkstras
 vector<pii>adj[mxN];
