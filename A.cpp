@@ -6,6 +6,7 @@ using namespace __gnu_pbds;
 #define int long long
 #define ld long double
 #define pii pair<int, int>
+#define tup3 tuple<int, int, int>
 #define i128 __int128_t
 #define ar array
 #define pb emplace_back
