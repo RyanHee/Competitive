@@ -21,6 +21,7 @@ using namespace __gnu_pbds;
 #define yes "Yes"
 #define no "No"
 #define endl '\n'
+#define neg1 void(cout << -1 << endl)
 #define debug(x) cout << #x << ": " << x << endl
 
 template <typename T>
